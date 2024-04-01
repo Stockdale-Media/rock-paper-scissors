@@ -1,4 +1,6 @@
-// 1. Game will played against the computer. Begin with a function
+// Steps For Obtaining Solution For The Rock, Paper, Scissors Game.
+//------------------------------------------------------------------
+// 1. Game will be  played against the computer. Begin with a function
 // called getComputerChoice that will randomly return either "Rock", "Paper" or "Scissors"
 // 2. Write a function that plays a single round of Rock Paper Scissors. The function
 // should take two parameters - the playerSelection and computerSelection - and then
