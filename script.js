@@ -1,90 +1,82 @@
-// Steps For Obtaining Solution For The Rock, Paper, Scissors Game.
-//------------------------------------------------------------------
-// 1. Game will be  played against the computer. Begin with a function
-// called getComputerChoice that will randomly return either "Rock", "Paper" or "Scissors"
-// 2. Write a function that plays a single round of Rock Paper Scissors. The function
-// should take two parameters - the playerSelection and computerSelection - and then
-// return a string that declares the winner of the round like so: "You lose! Paper beats Rock".
-// 3. Write a new function called playGame(). Use the previous function inside of this one to play a five round
-// game that keeps score and reports a winner or loser at the end.
-// 4. Use prompt() to get input from the user.
 
-
-// Initialize and assign variables of playerScore and computerScore
+// Declaring all the constants and variables
+const choices = ["rock", "paper", "scissors"];
+const playerDisplay = document.getElementById("playerDisplay");
+const computerDisplay = document.getElementById("computerDisplay");
+const resultDisplay = document.getElementById("resultDisplay");
+const playerScoreDisplay = document.getElementById("playerScoreDisplay");
+const computerScoreDisplay = document.getElementById("computerScoreDisplay");
+const winner = document.getElementsByClassName("winner");
+const gameWinnerDisplay = document.getElementById("gameWinnerDisplay");
 let playerScore = 0;
 let computerScore = 0;
 
-// Create function getComputerChoice()
-let getComputerChoice = () => {
-  let choice = ["rock", "paper", "scissors"];
-  return choice[Math.floor(Math.random() * choice.length)];
-}
+// The playGame function takes in the player's choice and compares it to the computer's choice to determine the winner
+let playGame = (playerChoice) => {
+  const computerChoice = choices[Math.floor(Math.random() * 3)];
+  let result = "";
 
-// Create function playRound()
-let playRound = (playerSelection, computerSelection) => {
-  switch (true) {
-    case (playerSelection === "rock"):
-    case (computerSelection === "scissors"):
-      ++playerScore;
-      return "You win! Rock beats scissors";
-      break;
-    case (playerSelection === "scissors"):
-    case (computerSelection === "rock"):
-      ++computerScore;
-      return "You lose! Rock beats scissors";
-      break;
-    case (playerSelection === "rock"):
-    case (computerSelection === "rock"):
-      return "It's a draw!";
-      break;
-    case (playerSelection === "paper"):
-    case (computerSelection === "rock"):
-      ++playerScore;
-      return "You win! Paper beats rock";
-      break;
-    case (playerSelection === "rock"):
-    case (computerSelection === "paper"):
-      ++computerScore;
-      return "You lose! Paper beats rock";
-      break;
-    case (playerSelection === "paper"):
-    case (computerSelection === "paper"):
-      return "It's a draw!";
-      break;
-    case (playerSelection === "scissors"):
-    case (computerSelection === "paper"):
-      ++playerScore;
-      return "You win! Scissors beats paper";
-      break;
-    case (playerSelection === "paper"):
-    case (computerSelection === "scissors"):
-      ++computerScore;
-      return "You lose! Scissors beats paper";
-      break;
-    case (playerSelection === "scissors"):
-    case (computerSelection === "scissors"):
-      return "It's a draw!";
-      break;
-  }
-}
-
-// Create function playGame()
-let playGame = () => {
-  for(let i = 0; i < 5; i++) {
-    let playerSelection = prompt("Enter rock, paper, or scissors: ");
-    let computerSelection = getComputerChoice();
-    console.log(playRound(playerSelection, computerSelection));
-  }
-  if (playerScore > computerScore) {
-    console.log("You win the game!");
-  }
-  else if (playerScore === computerScore) {
-    console.log("It's a tie!");
+  if (playerChoice === computerChoice) {
+    result = "IT'S A TIE!";
   }
   else {
-    console.log("You lose the game!");
+    switch (playerChoice) {
+      case "rock":
+        result = (computerChoice === "scissors") ? "YOU WIN!" : "YOU LOSE!";
+        break;
+      case "paper":
+        result = (computerChoice === "rock") ? "YOU WIN!" : "YOU LOSE!";
+        break;
+      case "scissors":
+        result = (computerChoice === "paper") ? "YOU WIN!" : "YOU LOSE!";
+        break;
+    }
   }
-}
+  // Setting the text content of the playerDisplay, computerDisplay, and resultDisplay
+  playerDisplay.textContent = `PLAYER: ${playerChoice}`;
+  computerDisplay.textContent = `COMPUTER: ${computerChoice}`;
+  resultDisplay.textContent = result;
 
-// Call playGame()
-playGame();
+  // Defaulting the text color of the resultDisplay to black
+  resultDisplay.classList.remove("green-text", "red-text");
+  
+  // Changing the text color of the resultDisplay based on the result
+  switch (result) {
+    case "YOU WIN!":
+      resultDisplay.classList.add("green-text");
+      playerScore++;
+      playerScoreDisplay.textContent = playerScore;
+      break;
+    case "YOU LOSE!":
+      resultDisplay.classList.add("red-text");
+      computerScore++;
+      computerScoreDisplay.textContent = computerScore;
+      break;
+  }
+  
+ // if playerScore or computerScore is equal to 5, return a display of the winner. if its a draw, then
+ // return a display of its a draw and reset the game.
+ // ___________________________________________________
+
+ // Checking to see if the player wins the game or if the computer wins the game, or if the game is a draw.
+  if (playerScore === 5 || computerScore === 5) {
+    if (playerScore === 5) {
+      gameWinnerDisplay.textContent = "PLAYER WINS THE GAME!";
+      gameWinnerDisplay.classList.add("green-text");
+    }
+    else if (computerScore === 5) {
+      gameWinnerDisplay.textContent = "COMPUTER WINS THE GAME!";
+      gameWinnerDisplay.classList.add("red-text");
+    }
+    else {
+      gameWinnerDisplay.textContent = "THIS GAME HAS COME TO A DRAW!";
+      gameWinnerDisplay.classList.remove("green-text", "red-text");
+    }
+
+    // Resetting the game
+    playerScore = 0;
+    computerScore = 0;
+    playerScoreDisplay.textContent = playerScore;
+    computerScoreDisplay.textContent = computerScore;
+  }
+};
